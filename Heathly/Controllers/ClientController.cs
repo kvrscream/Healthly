@@ -2,15 +2,22 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Heathly.Data;
 using Microsoft.AspNetCore.Mvc;
 
-// For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace Heathly.Controllers
 {
     public class ClientController : Controller
     {
-        // GET: /<controller>/
+
+        private readonly ApplicationDbContext _context;
+
+        public ClientController(ApplicationDbContext context)
+        {
+            _context = context;
+        }
+        
         public IActionResult Index()
         {
             return View();
