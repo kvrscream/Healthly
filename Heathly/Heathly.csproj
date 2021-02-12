@@ -20,5 +20,6 @@
   <ItemGroup>
     <Folder Include="Views\Plain\" />
     <Folder Include="Services\" />
+    <Folder Include="Views\Client\" />
   </ItemGroup>
 </Project>

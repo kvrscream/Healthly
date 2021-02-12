@@ -27,7 +27,7 @@ namespace Heathly.Controllers
         }
 
 
-        public async Task<IActionResult> InsertOrUpdatePlain(int? id)
+        public async Task<IActionResult> InsertOrUpdatePlain(int? id = null)
         {
             PlainModel plain = new PlainModel();
             if(id != null)

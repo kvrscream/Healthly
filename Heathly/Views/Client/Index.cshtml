@@ -1,13 +1,14 @@
-﻿@model IEnumerable<PlainModel>
+﻿@model IEnumerable<PersonModel>
 @{
-    ViewData["Title"] = "Planos";
+    ViewData["Title"] = "Clientes";
 }
+
 
 <div class="col-md-12">
     <div class="jumbotron">
         <h3>@ViewData["Title"]</h3>
     </div>
-    <a href="@Url.Action("InsertOrUpdatePlain", "plain")" class="btn btn-primary">
+    <a href="@Url.Action("InsertOrUpdateClient", "Client")" class="btn btn-primary">
         Novo Plano
     </a>
 </div>
@@ -19,28 +20,29 @@
                     <thead>
                         <tr>
                             <th>Nome</th>
-                            <th>Data Início Vigência</th>
-                            <th>Data Fim Vigência</th>
+                            <th>Pessoa Jurídica</th>
+                            <th>Documento</th>
                             <th>Ações</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @if(Model.Count() > 0)
+                        @if (Model.Count() > 0)
                         {
-                            foreach (PlainModel plain in Model)
+                            foreach (PersonModel client in Model)
                             {
-                        <tr>
-                            <td>@plain.Nome</td>
-                            <td>@plain.InicioVigencia.ToString("dd/MM/yyyy")</td>
-                            <td>@plain.FimVigencia.ToString("dd/MM/yyyy")</td>
-                            <td>
-                                <a href="@Url.Action("InsertOrUpdatePlain", "plain", new { id = plain.Id})" class="btn btn-info">
-                                    Editar
-                                </a>
-                            </td>
-                        </tr>
+                                <tr>
+                                    <td>@client.Nome</td>
+                                    <td>@client.PJ</td>
+                                    <td>@client.Documento</td>
+                                    <td>
+                                        <a href="@Url.Action("InsertOrUpdateClient", "plain", new { id = client.Id})" class="btn btn-info">
+                                            Editar
+                                        </a>
+                                    </td>
+                                </tr>
                             }
-                        }else
+                        }
+                        else
                         {
                             <tr>
                                 <td colspan="5">

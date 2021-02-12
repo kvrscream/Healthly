@@ -23,12 +23,12 @@
 
                 </div>
                 <div class="col-md-12 form-group">
-                    <input asp-for="InicioVigencia" class="form-control dateMask" placeholder="Data de início da vigência" />
+                    <input asp-for="InicioVigencia" class="form-control dateMask" placeholder="Data de início da vigência" type="text" />
                     <span asp-validation-for="InicioVigencia" class="text-danger"></span>
 
                 </div>
                 <div class="col-md-12 form-group">
-                    <input asp-for="FimVigencia" class="form-control dateMask" placeholder="Data do fim da vicgência" />
+                    <input asp-for="FimVigencia" class="form-control dateMask" placeholder="Data do fim da vicgência" type="text" />
                     <span asp-validation-for="FimVigencia" class="text-danger"></span>
 
                 </div>
@@ -43,7 +43,7 @@
                 
                 <div class="col-md-12 form-group">
                     <button type="submit" class="btn btn-success">Salvar</button>
-                    <button type="submit" class="btn btn-warning">Limpar</button>
+                    <button type="reset" class="btn btn-warning">Limpar</button>
                 </div>
             </div>
         }
@@ -51,7 +51,7 @@
 </div>
 
 @section scripts{
-    <script type="text/javascript" src="˜/js/jquery.maskedinput.min.js"></script>
+    <script type="text/javascript" src="~/js/jquery.maskedinput.min.js"></script>
     <script type="text/javascript">
         $(document).ready(function () {
             $(".dateMask").mask("99/99/9999")
