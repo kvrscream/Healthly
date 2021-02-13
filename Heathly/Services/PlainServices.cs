@@ -76,22 +76,22 @@ namespace Heathly.Services
         }
 
 
-        public string DeletePlain(ApplicationDbContext context, PlainModel plain)
-        {
-            string message = "Plano excluído com sucesso";
+        //public string DeletePlain(ApplicationDbContext context, PlainModel plain)
+        //{
+        //    string message = "Plano excluído com sucesso";
 
-            try
-            {
-                context.Planos.Remove(plain);
-                context.SaveChanges();
-            }
-            catch (Exception ex)
-            {
-                message = "Ocorreu um problema inesperado! " + ex.Message;
-            }
+        //    try
+        //    {
+        //        context.Planos.Remove(plain);
+        //        context.SaveChanges();
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        message = "Ocorreu um problema inesperado! " + ex.Message;
+        //    }
 
-            return message;
-        }
+        //    return message;
+        //}
 
     }
 }

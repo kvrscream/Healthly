@@ -1,0 +1,189 @@
+﻿@model PersonModel
+@{
+    ViewData["Title"] = "Adicionar plano ao cliente " + Model.Nome;
+    List<PlainModel> planos = ViewBag.Plains;
+    List<ClientPlainsModel> clientPlains = ViewBag.ClientPlains;
+}
+
+<div class="row">
+    <p class="alert alert-info">
+        Adicione ou remova planos para o cliente @Model.Nome
+    </p>
+</div>
+
+<div class="row">
+    <input hidden asp-for="Id" id="clientId" />
+    @if(planos.Count > 0)
+    {
+        foreach (PlainModel plano in planos)
+        {
+            bool vinculado = false;
+            if(clientPlains.Count > 0)
+            {
+                foreach (ClientPlainsModel clientPlain in clientPlains)
+                {
+                    if(clientPlain.Planos.Id == plano.Id)
+                    {
+                        vinculado = true;
+                    }
+                }
+            }
+
+    <div class="col-md-12 form-group">
+        <label>@plano.Nome</label>
+        @if (plano.FimVigencia < DateTime.Now)
+        {
+            <label class="text-danger">
+                Plano encontra-se no fim de sua vigência
+            </label>
+        }
+        else
+        {
+            if (vinculado)
+            {
+                <button type="button" class="btn btn-warning remove" data-id="@plano.Id">
+                    Remover
+                </button>
+            }
+            else
+            {
+                <button type="button" class="btn btn-primary  vincula" data-id="@plano.Id">
+                    Vincular
+                </button>
+            }
+        }
+    </div>
+        }
+    }
+</div>
+
+<div class="modal" id="modal-remove" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Atenção</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Deseja remover este plano deste cliente?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick="remove()">Sim</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal" id="modal-load" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Salvando dados</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Aguarde...</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="modal-response" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Atenção</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p id="response-text"></p>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section scripts{
+    <script type="text/javascript">
+
+        let idPlano;
+        $(".vincula").click(function () {
+            idPlano = $(this).attr("data-id");
+            vincula(idPlano);
+        })
+
+        $(".remove").click(function () {
+            idPlano = $(this).attr("data-id");
+            $("#modal-remove").modal("show");
+        })
+
+        function vincula(id) {
+            $("#modal-load").modal("show");
+
+            $.ajax({
+                url: "/client/AddPlainToClient?planoId=" + idPlano + "&clienteId=" + $("#clientId").val(),
+                contentType: "application/json",
+                type: "get",
+                success: function (response) {
+                    $("#modal-load").modal("hide");
+                    if (response.success) {
+                        $("#response-text").text(response.message);
+                        $("#modal-response").modal("show");
+
+                    } else {
+                        $("#response-text").text(response.message);
+                        $("#modal-response").modal("show");
+                    }
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 2000)
+                },
+                error: function () {
+                    $("#modal-load").modal("hide");
+                    alert("Um erro inesperado ocorreu!")
+                }
+            });
+
+        }
+
+        function remove() {
+            $("#modal-load").modal("show");
+
+            $.ajax({
+                url: "/client/RemovePlainToClient?planoId=" + idPlano + "&clienteId=" + $("#clientId").val(),
+                contentType: "application/json",
+                type: "get",
+                success: function (response) {
+                    $("#modal-load").modal("hide");
+                    if (response.success) {
+                        $("#response-text").text(response.message);
+                        $("#modal-response").modal("show");
+
+                    } else {
+                        $("#response-text").text(response.message);
+                        $("#modal-response").modal("show");
+                    }
+
+                    setTimeout(() => {
+                        window.location.reload();
+                    },2000)
+                },
+                error: function () {
+                    $("#modal-load").modal("hide");
+                    alert("Um erro inesperado ocorreu!")
+                }
+            });
+        }
+
+    </script>
+    
+
+}

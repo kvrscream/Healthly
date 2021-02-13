@@ -1,0 +1,112 @@
+﻿@model PersonModel
+@{
+    if (Model.Id > 0)
+    {
+        ViewData["Title"] = "Editar cliente";
+    }
+    else
+    {
+        ViewData["Title"] = "Cadastrar cliente";
+    }
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <h2>Cadastrar Cliente</h2>
+        @using (Html.BeginForm())
+        {
+            <center>
+                @Html.Raw(ViewBag.Message)
+                @if (Model.Id != null && Model.Id > 0)
+                {
+                    @Html.HiddenFor(m => m.Id);
+                }
+            </center>
+
+            <div class="row">
+                <div class="col-md-12 form-group" ´>
+                    <input asp-for="Nome" class="form-control" placeholder="Nome" />
+                    <span asp-validation-for="Nome" class="text-danger"></span>
+
+                </div>
+                <div class="col-md-12 form-group">
+                    <label class="">Pessoa Jurídica</label>
+                    <select class="form-control" id="PJ">
+                        <option value="true">Sim</option>
+                        <option value="false">Não</option>
+                    </select>
+                </div>
+                <div class="col-md-12 form-group">
+                    <input asp-for="Documento" class="form-control" id="documento" placeholder="Documento" type="text" />
+                    <span asp-validation-for="Documento" class="text-danger"></span>
+                </div>
+                <div class="col-md-12 form-group">
+                    <input asp-for="RG" hidden class="form-control" placeholder="Digite seu RG" type="text" />
+                </div>
+                <div class="col-md-12 form-group">
+                    <input asp-for="Email" class="form-control" placeholder="Digite o seu e-mail" type="text" />
+                </div>
+                <div class="col-md-12 form-group">
+                    <input asp-for="Telefone" class="form-control phoneNumber" placeholder="Digite número de telefone" type="text" />
+                </div>
+                <div class="col-md-12 form-group">
+                    <input asp-for="DataNascimento" class="form-control dateMask" placeholder="Digite a data de nascimento ou criação da empresa" type="text" />
+                </div>
+                <div class="col-md-12 form-group">
+                    <button type="submit" class="btn btn-success">Salvar</button>
+                    <button type="reset" class="btn btn-warning">Limpar</button>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+@section scripts{
+    <script type="text/javascript" src="~/js/jquery.maskedinput.min.js"></script>
+    <script type="text/javascript">
+
+        let pf = false;
+        $("#PJ").change(function () {
+            if ($(this).val() == true) {
+                $("#documento").mask("99.999.999/9999-99")
+                $("#RG").removeAttr("required");
+                $("#RG").attr("hidden");
+            } else {
+                $("#documento").mask("999.999.999-99")
+                $("#RG").removeAttr("hidden");
+                $("#RG").attr("required");
+                $("#RG").mask("99.999.999-9")
+                pf = true;
+            }
+        });
+
+        $(document).ready(function () {
+            $(".dateMask").mask("99/99/9999");
+            $(".phoneNumber").mask("(99)9999-999?9");
+
+            if ($("#PJ").val() == false) {
+                $("#documento").mask("999.999.999-99")
+                $("#RG").removeAttr("hidden");
+                $("#RG").attr("required");
+                $("#RG").mask("99.999.999-9")
+                pf = true;
+            } else {
+                $("#documento").mask("99.999.999/9999-99")
+                $("#RG").removeAttr("required");
+                $("#RG").attr("hidden");
+            }
+
+        });
+
+        $("form").submit(function (e) {
+            let rg = $("#RG").val();
+            if (pf == true && rg.length == 0) {
+            console.log("condition")
+                e.preventDefault();
+                $("#RG").focus();
+                $("#RG").css("border", "red solid 1px")
+            }
+        });
+
+    </script>
+}

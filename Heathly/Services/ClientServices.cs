@@ -24,7 +24,9 @@ namespace Heathly.Services
                     clients = context.Clientes.Where(w => w.Nome.Contains(nome)).ToList();
                 } else if(data != null)
                 {
-                    clients = context.Clientes.Where(w => w.DataCadastro == data).ToList();
+                    DateTime dateParse = data ?? DateTime.Now;
+                    string dataString = dateParse.ToString("dd/MM/yyyy");
+                    clients = context.Clientes.Where(w => w.DataCadastro >= dateParse.AddHours(00).AddMinutes(00) && w.DataCadastro <= dateParse.AddHours(23).AddMinutes(59)).ToList();
                 } else
                 {
                     clients = context.Clientes.ToList();
@@ -86,22 +88,22 @@ namespace Heathly.Services
             return message;
         }
 
-        public string RemoveClient(ApplicationDbContext context, PersonModel client)
-        {
-            string message = "Cliente excluído com sucesso.";
+        //public string RemoveClient(ApplicationDbContext context, PersonModel client)
+        //{
+        //    string message = "Cliente excluído com sucesso.";
 
-            try
-            {
-                context.Clientes.Remove(client);
-                context.SaveChanges();
-            }
-            catch (Exception ex)
-            {
-                message = "Um erro inesperado ocorreu. " + ex.Message;
-            }
+        //    try
+        //    {
+        //        context.Clientes.Remove(client);
+        //        context.SaveChanges();
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        message = "Um erro inesperado ocorreu. " + ex.Message;
+        //    }
 
-            return message;
-        }
+        //    return message;
+        //}
 
     }
 }

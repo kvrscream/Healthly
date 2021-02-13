@@ -4,13 +4,36 @@
 }
 
 
-<div class="col-md-12">
-    <div class="jumbotron">
-        <h3>@ViewData["Title"]</h3>
+<div class="row">
+    <div class="col-md-12">
+        <div class="jumbotron">
+            <h3>@ViewData["Title"]</h3>
+        </div>
     </div>
-    <a href="@Url.Action("InsertOrUpdateClient", "Client")" class="btn btn-primary">
-        Novo Plano
-    </a>
+    <div class="col-md-4">
+        <a href="@Url.Action("InsertOrUpdateClient", "Client")" class="btn btn-primary">
+            Novo Cliente
+        </a>
+    </div>
+    <div class="col-md-12">
+        @using (Html.BeginForm())
+        {
+            <div class="col-md-4 form-group">
+                <input type="text" class="form-control" name="nome" placeholder="Pesquisar por nome" />
+            </div>
+            <div class="col-md-4 form-group">
+                <input type="text" class="form-control" name="documento" placeholder="Pesquisar por CPF/CNPJ" />
+            </div>
+            <div class="col-md-4 form-group">
+                <input type="text" class="form-control dateMask" name="data" placeholder="Data de cadastro" />
+            </div>
+            <div class="col-md-12 form-group">
+                <button class="btn btn-primary" type="submit">
+                    Buscar
+                </button>
+            </div>
+        }
+    </div>
 </div>
 <div class="col-md-12">
     <div class="row">
@@ -20,7 +43,7 @@
                     <thead>
                         <tr>
                             <th>Nome</th>
-                            <th>Pessoa Jurídica</th>
+                            <th>Data Cadastro</th>
                             <th>Documento</th>
                             <th>Ações</th>
                         </tr>
@@ -32,11 +55,15 @@
                             {
                                 <tr>
                                     <td>@client.Nome</td>
-                                    <td>@client.PJ</td>
+                                    <td>@client.DataCadastro.ToString("dd/MM/yyyy")</td>
                                     <td>@client.Documento</td>
                                     <td>
-                                        <a href="@Url.Action("InsertOrUpdateClient", "plain", new { id = client.Id})" class="btn btn-info">
+                                        <a href="@Url.Action("InsertOrUpdateClient", "client", new { id = client.Id })" class="btn btn-info">
                                             Editar
+                                        </a>
+
+                                        <a href="@Url.Action("AddPlain", "client", new { id = client.Id })" class="btn btn-dark">
+                                            Adicionar/Remover Plano
                                         </a>
                                     </td>
                                 </tr>
@@ -49,10 +76,21 @@
                                     Nenhum plano cadastrado.
                                 </td>
                             </tr>
-                        }
+                            }
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
 </div>
+
+@section scripts{
+    <script type="text/javascript" src="~/js/jquery.maskedinput.min.js"></script>
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            $(".dateMask").mask("99/99/9999");
+        })
+
+    </script>
+}

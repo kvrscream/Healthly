@@ -14,6 +14,8 @@ namespace Heathly.Data
 
         public DbSet<PlainModel> Planos { get; set; }
 
+        public DbSet<ClientPlainsModel> PlanosCliente { get; set; }
+
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
